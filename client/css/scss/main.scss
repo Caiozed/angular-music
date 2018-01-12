@@ -1,0 +1,60 @@
+
+body,html{
+    height: 100%;
+    width: 100%;
+}
+
+h1, p, label{
+    color: white;
+}
+
+form{
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    label, input{
+        width: 200px;
+        margin: 0 auto;
+        display: block;
+        text-align: left;
+    }
+    .btn{
+        display: block;   
+        width: 80px;
+    }
+}
+
+#content{
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+#start-header, #signup{
+    background: rgba(0,138,9,1);
+    background: -moz-linear-gradient(top, rgba(0,138,9,1) 0%, rgba(0,0,0,1) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(0,138,9,1)), color-stop(100%, rgba(0,0,0,1)));
+    background: -webkit-linear-gradient(top, rgba(0,138,9,1) 0%, rgba(0,0,0,1) 100%);
+    background: -o-linear-gradient(top, rgba(0,138,9,1) 0%, rgba(0,0,0,1) 100%);
+    background: -ms-linear-gradient(top, rgba(0,138,9,1) 0%, rgba(0,0,0,1) 100%);
+    background: linear-gradient(to bottom, rgba(0,138,9,1) 0%, rgba(0,0,0,1) 100%);
+    padding: 2em 5em;
+    margin: 0 auto;
+    height: 100%;
+    width: 100%;
+    div{
+         position: relative;
+         top: 40%;
+         text-align: center;
+    }
+}
+
+#footer{
+    background: #0f0f0f;
+    padding: 1em;
+    margin: 0;
+    p{
+        color: #333333;
+    }
+}
