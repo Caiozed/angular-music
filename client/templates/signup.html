@@ -1,16 +1,20 @@
 <div id="signup">
     <div>
-        
         <form>
             <h1>Sign up</h1>
             <label>Username</label>
-            <input type="text" name="username"/>
+            <input type="text" name="username" ng-model="username" required pattern=".{3,50}" title="3 to 50 characters"/>
             <label>Password</label>
-            <input type="password" name="password"/>
+            <input type="password" name="password" ng-model="password" required pattern=".{8,50}" title="8 to 50 characters"/>
             <label>Password confirmation</label>
-            <input type="password_confirmation" name="password_confirmation"/>
-            <input type="submit" value="Signup" class="btn btn-success"/>
+            <input type="password" name="password_confirmation" ng-model="password_confirmation" required pattern=".{8,50}" title="8 to 50 characters"/>
+            <input type="submit" value="Signup" id="signup-submit" ng-click="confirmUserData(username, password, password_confirmation)" class="btn btn-success"/>
             <p>Already a member ? <a href="#!login">Log in</a></p>
+            <div class="alert alert-danger" ng-show="messages">
+                <ul>
+                    <li ng-repeat="msg in messages">{{msg}}</li>
+                </ul>
+            </div>
         </form>  
     </div>
 </div>
