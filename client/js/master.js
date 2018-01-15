@@ -11,12 +11,15 @@ app.config(function($routeProvider){
     
     .when("/login", {
         templateUrl: "../templates/login.html"
+    })
+    
+    .when("/menu", {
+        templateUrl: "../templates/menu.html"
     });
 });
 
 app.controller("signupCtrl", function($scope, $rootScope, $cookies, $http){
-    $scope.isLoggedIn = true;
-    
+
     $scope.submitUser = function(username, password, password_confirmation){
         request("POST", "/new/user", {username: username, password: password},
             function success(response){
@@ -48,6 +51,7 @@ app.controller("signupCtrl", function($scope, $rootScope, $cookies, $http){
                     if(remember_me){
                         $cookies.put('user_id', response.data[0].id);
                     }
+                    $scope.isLoggedIn = true;
                     $rootScope.current_user = response.data[0];
                     redirectTo("#!menu"); 
                 }
