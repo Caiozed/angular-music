@@ -1,4 +1,3 @@
-
 body,html{
     height: 100%;
     width: 100%;
@@ -31,7 +30,7 @@ form{
     margin: 0;
 }
 
-#start-header, #signup{
+#start-header, #signup, #login{
     background: rgba(0,138,9,1);
     background: -moz-linear-gradient(top, rgba(0,138,9,1) 0%, rgba(0,0,0,1) 100%);
     background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(0,138,9,1)), color-stop(100%, rgba(0,0,0,1)));

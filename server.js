@@ -28,7 +28,6 @@ app.use(bodyParser.urlencoded({
 app.post("/new/user", function(req, res){
   var username = req.body.username;
   var password = req.body.password;
-  console.log(username, password);
   var query = "INSERT INTO users (username, password) VALUES (?, ?)";
   con.query(query, [username, password], function(err, result){
     if(err){
@@ -40,6 +39,22 @@ app.post("/new/user", function(req, res){
     }
   });
 });
+
+app.post("/login", function(req, res){
+  var username = req.body.username;
+  var password = req.body.password;
+  var query = "SELECT * FROM users WHERE username = ? AND password = ?";
+  con.query(query, [username, password], function(err, result){
+    if(err){
+      res.send(err);
+      console.log(err);
+    }else{
+      res.json(result);
+      console.log("User sent");
+    }
+  });
+});
+
 app.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function(){
   console.log("server listening at", process.env.IP + ":" + process.env.PORT);
 });
