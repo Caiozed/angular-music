@@ -4,6 +4,7 @@
     <title>Angular Music</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" />
     <link rel="stylesheet" href="css/main.css" type="text/css" />
   </head>
   <body ng-controller="signupCtrl">
@@ -13,6 +14,24 @@
     <footer ng-hide="isLoggedIn" id="footer">
       <p>&copy;</p>  
     </footer>
+    
+    <div id="player-bar">
+        <div class="album-info">
+          <h3>{{song_name}} Song name</h3>
+          <p>{{album_name}} Album name</p>
+        </div>
+        <div id="player-dashboard">
+          <ul class="player-buttons">
+            <li><i class="fa fa-step-backward" aria-hidden="true"></i></li>
+            <li><i class="fa fa-play-circle fa-2x" aria-hidden="true"></i></li>
+            <li><i class="fa fa-step-forward" aria-hidden="true"></i></li>
+          </ul>
+          <audio controls>
+            <source ng-src={{song_path}} type="audio/ogg">
+            <source ng-src={{song_path}} type="audio/mpeg">
+          </audio>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

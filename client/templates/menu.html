@@ -1,40 +1,86 @@
-<div id="menu">
+<div id="menu" class="row">
     <nav class="sidebar">
-        <input type="text" name="search"/>
+        <input type="text" name="search" value="Search"/>
+        <header>
+            <h4><a href="#!menu">Menu</a></h4>
+        </header>
         <ul>
-            <li>Text</li>
+            <li>Recently played</li>
         </ul>
     </nav>
     
-    <div id="albums">
+    <div id="albums" class="col">
         <h1>Recent Albums</h1>
         <ul>
             <li>
-                <img src="../img/placeholder_cover.jpg"></img>
+                <div class="album-image">
+                    <a ng-href=albums/{{}}> 
+                        <img src="../img/placeholder_cover.jpg"></img>
+                        <div class="play-album">
+                           <i class="fa fa-play-circle fa-3x play-album"></i> 
+                        </div>
+                    </a>
+                </div>
                 <h3>Album name</h3>
                 <p>Artist Name</p>
             </li>
             <li>
-                <img src="../img/placeholder_cover.jpg"></img>
-                <h3>Album name</h3>
-                <p>Artist Name</p>
-            </li><li>
-                <img src="../img/placeholder_cover.jpg"></img>
-                <h3>Album name</h3>
-                <p>Artist Name</p>
-            </li>
-            <li>
-                <img src="../img/placeholder_cover.jpg"></img>
-                <h3>Album name</h3>
-                <p>Artist Name</p>
-            </li>
-            <li>
-                <img src="../img/placeholder_cover.jpg"></img>
+                <div class="album-image">
+                    <a ng-href=albums/{{}}> 
+                        <img src="../img/placeholder_cover.jpg"></img>
+                        <div class="play-album">
+                           <i class="fa fa-play-circle fa-3x play-album"></i> 
+                        </div>
+                    </a>
+                </div>
                 <h3>Album name</h3>
                 <p>Artist Name</p>
             </li>
             <li>
-                <img src="../img/placeholder_cover.jpg"></img>
+                <div class="album-image">
+                    <a ng-href=albums/{{}}> 
+                        <img src="../img/placeholder_cover.jpg"></img>
+                        <div class="play-album">
+                           <i class="fa fa-play-circle fa-3x play-album"></i> 
+                        </div>
+                    </a>
+                </div>
+                <h3>Album name</h3>
+                <p>Artist Name</p>
+            </li>
+            <li>
+                <div class="album-image">
+                    <a ng-href=albums/{{}}> 
+                        <img src="../img/placeholder_cover.jpg"></img>
+                        <div class="play-album">
+                           <i class="fa fa-play-circle fa-3x play-album"></i> 
+                        </div>
+                    </a>
+                </div>
+                <h3>Album name</h3>
+                <p>Artist Name</p>
+            </li>
+            <li>
+                <div class="album-image">
+                    <a ng-href=albums/{{}}> 
+                        <img src="../img/placeholder_cover.jpg"></img>
+                        <div class="play-album">
+                           <i class="fa fa-play-circle fa-3x play-album"></i> 
+                        </div>
+                    </a>
+                </div>
+                <h3>Album name</h3>
+                <p>Artist Name</p>
+            </li>
+            <li>
+                <div class="album-image">
+                    <a ng-href=albums/{{}}> 
+                        <img src="../img/placeholder_cover.jpg"></img>
+                        <div class="play-album">
+                           <i class="fa fa-play-circle fa-3x play-album"></i> 
+                        </div>
+                    </a>
+                </div>
                 <h3>Album name</h3>
                 <p>Artist Name</p>
             </li>
