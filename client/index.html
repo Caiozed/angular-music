@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" />
     <link rel="stylesheet" href="css/main.css" type="text/css" />
   </head>
-  <body ng-controller="signupCtrl">
+  <body>
     <div id="content" ng-view >
       
     </div>
@@ -15,7 +15,7 @@
       <p>&copy;</p>  
     </footer>
     
-    <div id="player-bar">
+    <div id="player-bar" ng-show="isLoggedIn">
         <div class="album-info">
           <h3>{{song_name}} Song name</h3>
           <p>{{album_name}} Album name</p>

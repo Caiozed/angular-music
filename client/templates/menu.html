@@ -1,4 +1,4 @@
-<div id="menu" class="row">
+<div id="menu" ng-controller="mainMenuCtrl">
     <nav class="sidebar">
         <input type="text" name="search" value="Search"/>
         <header>
@@ -7,83 +7,43 @@
         <ul>
             <li>Recently played</li>
         </ul>
+        
+        <h3>{{current_user.username}}</h3>
     </nav>
     
-    <div id="albums" class="col">
+    <div id="albums">
         <h1>Recent Albums</h1>
         <ul>
-            <li>
+            <li ng-if="albums.length > 1" ng-repeat="album in albums">
                 <div class="album-image">
-                    <a ng-href=albums/{{}}> 
-                        <img src="../img/placeholder_cover.jpg"></img>
+                    <a ng-href=#!albums/{{album.id}}> 
+                        <img ng-src="{{album.image}}"></img>
                         <div class="play-album">
                            <i class="fa fa-play-circle fa-3x play-album"></i> 
                         </div>
                     </a>
                 </div>
-                <h3>Album name</h3>
-                <p>Artist Name</p>
+                <h3>{{album.name}}</h3>
+                <p>{{album.artist}}</p>
             </li>
-            <li>
+            
+            <li ng-if="albums.length != true">
                 <div class="album-image">
-                    <a ng-href=albums/{{}}> 
-                        <img src="../img/placeholder_cover.jpg"></img>
+                    <a ng-href=#!albums/{{albums.id}}> 
+                        <img ng-src="{{albums.image}}"></img>
                         <div class="play-album">
                            <i class="fa fa-play-circle fa-3x play-album"></i> 
                         </div>
                     </a>
                 </div>
-                <h3>Album name</h3>
-                <p>Artist Name</p>
-            </li>
-            <li>
-                <div class="album-image">
-                    <a ng-href=albums/{{}}> 
-                        <img src="../img/placeholder_cover.jpg"></img>
-                        <div class="play-album">
-                           <i class="fa fa-play-circle fa-3x play-album"></i> 
-                        </div>
-                    </a>
-                </div>
-                <h3>Album name</h3>
-                <p>Artist Name</p>
-            </li>
-            <li>
-                <div class="album-image">
-                    <a ng-href=albums/{{}}> 
-                        <img src="../img/placeholder_cover.jpg"></img>
-                        <div class="play-album">
-                           <i class="fa fa-play-circle fa-3x play-album"></i> 
-                        </div>
-                    </a>
-                </div>
-                <h3>Album name</h3>
-                <p>Artist Name</p>
-            </li>
-            <li>
-                <div class="album-image">
-                    <a ng-href=albums/{{}}> 
-                        <img src="../img/placeholder_cover.jpg"></img>
-                        <div class="play-album">
-                           <i class="fa fa-play-circle fa-3x play-album"></i> 
-                        </div>
-                    </a>
-                </div>
-                <h3>Album name</h3>
-                <p>Artist Name</p>
-            </li>
-            <li>
-                <div class="album-image">
-                    <a ng-href=albums/{{}}> 
-                        <img src="../img/placeholder_cover.jpg"></img>
-                        <div class="play-album">
-                           <i class="fa fa-play-circle fa-3x play-album"></i> 
-                        </div>
-                    </a>
-                </div>
-                <h3>Album name</h3>
-                <p>Artist Name</p>
+                <h3>{{albums.name}}</h3>
+                <p>{{albums.artist}}</p>
             </li>
         </ul>
+        <form>
+            <input type="text" name="name" ng-model="name"/>
+            <input type="file" name="image" ng-model="image"/>
+            <input type="submit" value="Submit" ng-click="addAlbum(name, image)"/>
+        </form>
     </div>
 </div>

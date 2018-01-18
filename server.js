@@ -2,7 +2,7 @@ var express = require('express');
 var mysql = require('mysql');
 var path = require('path');
 var bodyParser = require('body-parser');
-
+var fs = require('fs');
 
 var app = express();
 
@@ -56,7 +56,40 @@ app.post("/login", function(req, res){
 });
 
 app.post("/new/album", function(req, res){
-  console.log(req.body);
+  var name = req.body.name;
+  var image = req.body.image;
+  console.log(image);
+  var artist_id = req.body.artist_id;
+  fs.writeFile("/", image, function(err) {
+    if(err) {
+        return console.log(err);
+    }
+
+    console.log("The file was saved!");
+  }); 
+  // var query = "INSERT INTO albums (name image artist_id) VALUES (?, ?, ?)";
+  // con.query(query, [name, image_path, artist_id], function(err, result){
+  //   if(err){
+  //     res.send(err);
+  //     console.log(err);
+  //   }else{
+  //     res.send("Albums added");
+  //     console.log("Albums added");
+  //   }
+  // });
+});
+
+app.get("/albums", function(req, res){
+  var query = "SELECT * FROM albums LIMIT 50";
+  con.query(query, function(err, result){
+    if(err){
+      res.send(err);
+      console.log(err);
+    }else{
+      res.json(result);
+      console.log("Albums sent");
+    }
+  });
 });
 
 app.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function(){
