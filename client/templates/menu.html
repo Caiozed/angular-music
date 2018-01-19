@@ -14,7 +14,7 @@
     <div id="albums">
         <h1>Recent Albums</h1>
         <ul>
-            <li ng-if="albums.length > 1" ng-repeat="album in albums">
+            <li ng-repeat="album in albums">
                 <div class="album-image">
                     <a ng-href=#!albums/{{album.id}}> 
                         <img ng-src="{{album.image}}"></img>
@@ -24,27 +24,14 @@
                     </a>
                 </div>
                 <h3>{{album.name}}</h3>
-                <p>{{album.artist}}</p>
-            </li>
-            
-            <li ng-if="albums.length != true">
-                <div class="album-image">
-                    <a ng-href=#!albums/{{albums.id}}> 
-                        <img ng-src="{{albums.image}}"></img>
-                        <div class="play-album">
-                           <i class="fa fa-play-circle fa-3x play-album"></i> 
-                        </div>
-                    </a>
-                </div>
-                <h3>{{albums.name}}</h3>
-                <p>{{albums.artist}}</p>
+                <p>{{album.username}}</p>
             </li>
         </ul>
-        <form>
-            <input type="text" name="name" ng-model="name"/>
-            <div class="button" ngf-select ng-model="image" name="image" ngf-pattern="'image/*'"
-            ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
-            ngf-resize="{width: 100, height: 100}">Select</div>
+        <form id="album-form">
+            <input type="text" name="name" ng-model="name" required/>
+            <input class="button" ngf-select type="file" ng-model="image" name="image" ngf-pattern="'image/*'"
+            ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="200"
+            ngf-resize="{width: 200, height: 200}" required>
             <input type="submit" value="Submit" ng-click="addAlbum(name, image)"/>
         </form>
     </div>

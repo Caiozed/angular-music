@@ -13,7 +13,17 @@ var con = mysql.createConnection({
   database: "c9"
 });
 
-var upload = multer({ dest: 'uploads/' });
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'client/uploads/album');
+  },
+  filename: function (req, file, cb) {
+    var type = file.mimetype.split("/");
+    cb(null, file.fieldname + "_" + Date.now()+ '.' + type[1]);
+  }
+});
+
+var upload = multer({ storage: storage });
 
 con.connect(function(err) {
   if (err) throw err;
@@ -67,23 +77,23 @@ app.post("/login", function(req, res){
 
 app.post("/new/album", upload.single('image'), function(req, res){
   var name = req.body.name;
-  var image_path = req.file.path;
-  console.log(req.file.path);
+  var image_path = "uploads/album/"+req.file.filename;
+  console.log(image_path);
   var artist_id = req.body.artist_id;
-  // var query = "INSERT INTO albums (name image artist_id) VALUES (?, ?, ?)";
-  // con.query(query, [name, image_path, artist_id], function(err, result){
-  //   if(err){
-  //     res.send(err);
-  //     console.log(err);
-  //   }else{
-  //     res.send("Albums added");
-  //     console.log("Albums added");
-  //   }
-  // });
+  var query = "INSERT INTO albums (name, image, artist_id) VALUES (?, ?, ?)";
+  con.query(query, [name, image_path, artist_id], function(err, result){
+    if(err){
+      res.send(err);
+      console.log(err);
+    }else{
+      res.send("Album added");
+      console.log("Album added");
+    }
+  });
 });
 
 app.get("/albums", function(req, res){
-  var query = "SELECT * FROM albums LIMIT 50";
+  var query = "SELECT * FROM albums INNER JOIN users ON albums.artist_id = users.id LIMIT 50";
   con.query(query, function(err, result){
     if(err){
       res.send(err);

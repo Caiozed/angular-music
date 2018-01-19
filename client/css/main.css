@@ -126,6 +126,7 @@ form .btn {
 }
 #albums .album-image img {
   width: 100%;
+  height: 100%;
 }
 #albums .album-image .play-album {
   position: absolute;
@@ -148,6 +149,12 @@ form .btn {
 #albums .album-image .play-album i:hover {
   opacity: 1;
   color: white;
+}
+
+.dropzone {
+  width: 100px;
+  height: 100px;
+  background: cyan;
 }
 
 #player-bar {

@@ -52,7 +52,7 @@ app.controller("signupCtrl", function($scope, $rootScope, $cookies, $http){
 });
 
 // Login controller
-app.controller("loginCtrl", function($scope, $rootScope, $cookies, $http){
+app.controller("loginCtrl", function($scope, $rootScope, $http, $window){
     
     $scope.login = function (username, password, remember_me){
        request($http, "POST", "/login", {username: username, password: password},
@@ -60,11 +60,13 @@ app.controller("loginCtrl", function($scope, $rootScope, $cookies, $http){
                 if(response.data.length == 0){
                     $scope.messages = ["Wrong username or password"];
                 }else{
+                    var user_info = {id: response.data[0].id, username: response.data[0].username};
+                    
                     if(remember_me){
-                        $cookies.put('user_id', response.data[0].id);
+                        $window.localStorage.setItem('user_info', JSON.stringify(user_info));
                     }
                     $scope.isLoggedIn = true;
-                    $rootScope.current_user = response.data[0];
+                    $window.sessionStorage.setItem('user_info', JSON.stringify(user_info));
                     redirectTo("#!menu"); 
                 }
             },
@@ -77,6 +79,7 @@ app.controller("loginCtrl", function($scope, $rootScope, $cookies, $http){
 
 // Menu controller
 app.controller("mainMenuCtrl", function($scope, $rootScope, $cookies, $http, Upload){
+    $scope.current_user = current_user();
     
     $scope.getAlbums = function(){
          request($http, "GET", "/albums", {},
@@ -84,8 +87,12 @@ app.controller("mainMenuCtrl", function($scope, $rootScope, $cookies, $http, Upl
                 if(response.data.length == 0){
                     $scope.messages = ["No albums"];
                 }else{
-                    $scope.albums = response.data; 
-                    console.log(response.data);
+                    if(!Array.isArray(response.data)){
+                        $scope.albums = [response.data]; 
+                    }else{
+                        $scope.albums = response.data;  
+                    }
+                    console.log($scope.albums);
                 }
             },
             
@@ -97,8 +104,9 @@ app.controller("mainMenuCtrl", function($scope, $rootScope, $cookies, $http, Upl
     $scope.addAlbum = function(name, image){
         Upload.upload({
             url: '/new/album',
-            data: {name: name, image: image, artist_id: $rootScope.current_user.id}
+            data: {name: name, image: image, artist_id: $scope.current_user.id}
         }).then(function (resp) {
+            $scope.getAlbums();
             console.log('Success ' + resp);
         });
     };
@@ -117,4 +125,16 @@ app.controller("mainMenuCtrl", function($scope, $rootScope, $cookies, $http, Upl
 
 function redirectTo(path){
     window.location = path;
+}
+
+function current_user(){
+    return  JSON.parse(window.sessionStorage.getItem("user_info"));
+}
+
+function isLoggedIn(){
+    if(current_user()){
+        return true;
+    }else{
+        return false;
+    }
 }
