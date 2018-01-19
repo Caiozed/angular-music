@@ -2,7 +2,7 @@ var express = require('express');
 var mysql = require('mysql');
 var path = require('path');
 var bodyParser = require('body-parser');
-var fs = require('fs');
+var multer = require('multer');
 
 var app = express();
 
@@ -12,6 +12,8 @@ var con = mysql.createConnection({
   password: "",
   database: "c9"
 });
+
+var upload = multer({ dest: 'uploads/' });
 
 con.connect(function(err) {
   if (err) throw err;
@@ -24,6 +26,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({     
   extended: true
 })); 
+
+app.use(function(req, res, next) {
+//set headers to allow cross origin request.
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 app.post("/new/user", function(req, res){
   var username = req.body.username;
@@ -55,18 +65,11 @@ app.post("/login", function(req, res){
   });
 });
 
-app.post("/new/album", function(req, res){
+app.post("/new/album", upload.single('image'), function(req, res){
   var name = req.body.name;
-  var image = req.body.image;
-  console.log(image);
+  var image_path = req.file.path;
+  console.log(req.file.path);
   var artist_id = req.body.artist_id;
-  fs.writeFile("/", image, function(err) {
-    if(err) {
-        return console.log(err);
-    }
-
-    console.log("The file was saved!");
-  }); 
   // var query = "INSERT INTO albums (name image artist_id) VALUES (?, ?, ?)";
   // con.query(query, [name, image_path, artist_id], function(err, result){
   //   if(err){

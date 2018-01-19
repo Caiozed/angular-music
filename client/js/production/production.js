@@ -1,4 +1,4 @@
-var app = angular.module("angularMusic", ["ngRoute", "ngCookies"]);
+var app = angular.module("angularMusic", ["ngRoute", "ngCookies", 'ngFileUpload']);
 app.config(function($routeProvider){
     $routeProvider
     .when("/", {
@@ -76,7 +76,7 @@ app.controller("loginCtrl", function($scope, $rootScope, $cookies, $http){
 });
 
 // Menu controller
-app.controller("mainMenuCtrl", function($scope, $rootScope, $cookies, $http){
+app.controller("mainMenuCtrl", function($scope, $rootScope, $cookies, $http, Upload){
     
     $scope.getAlbums = function(){
          request($http, "GET", "/albums", {},
@@ -95,20 +95,12 @@ app.controller("mainMenuCtrl", function($scope, $rootScope, $cookies, $http){
     };
     
     $scope.addAlbum = function(name, image){
-        var fd = new FormData();
-        fd.append("file", image);
-         request($http, "POST", "/new/album", {name: name, image: fd, artist_id: $rootScope.current_user.id},
-            function success(response){
-                if(response.data.length == 0){
-                    $scope.messages = ["No albums"];
-                }else{
-                    $scope.getAlbums();
-                }
-            },
-            
-            function error(response){
-                console.log(response);
-            });   
+        Upload.upload({
+            url: '/new/album',
+            data: {name: name, image: image, artist_id: $rootScope.current_user.id}
+        }).then(function (resp) {
+            console.log('Success ' + resp);
+        });
     };
     
     $scope.getAlbums();
