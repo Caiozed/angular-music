@@ -13,7 +13,7 @@ var con = mysql.createConnection({
   database: "c9"
 });
 
-var storage = multer.diskStorage({
+var storageImage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'client/uploads/album');
   },
@@ -23,7 +23,20 @@ var storage = multer.diskStorage({
   }
 });
 
-var upload = multer({ storage: storage });
+var uploadImage = multer({ storage: storageImage });
+
+var storageAudio = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'client/uploads/songs');
+  },
+  filename: function (req, file, cb) {
+    var type = file.mimetype.split("/");
+    cb(null, file.fieldname + "_" + Date.now()+ '.' + type[1]);
+  }
+});
+
+var uploadAudio = multer({ storage: storageAudio });
+
 
 con.connect(function(err) {
   if (err) throw err;
@@ -75,10 +88,9 @@ app.post("/login", function(req, res){
   });
 });
 
-app.post("/new/album", upload.single('image'), function(req, res){
+app.post("/new/album", uploadImage.single('image'), function(req, res){
   var name = req.body.name;
   var image_path = "uploads/album/"+req.file.filename;
-  console.log(image_path);
   var artist_id = req.body.artist_id;
   var query = "INSERT INTO albums (name, image, artist_id) VALUES (?, ?, ?)";
   con.query(query, [name, image_path, artist_id], function(err, result){
@@ -93,7 +105,7 @@ app.post("/new/album", upload.single('image'), function(req, res){
 });
 
 app.get("/albums", function(req, res){
-  var query = "SELECT * FROM albums INNER JOIN users ON albums.artist_id = users.id LIMIT 50";
+  var query = "SELECT albums.id, username, name, image FROM albums INNER JOIN users ON albums.artist_id = users.id LIMIT 50";
   con.query(query, function(err, result){
     if(err){
       res.send(err);
@@ -104,6 +116,51 @@ app.get("/albums", function(req, res){
     }
   });
 });
+
+app.get("/albums/:id", function(req, res){
+  var id = req.params.id;
+  var query = "SELECT * FROM albums WHERE id = ?";
+  con.query(query, id, function(err, result){
+    if(err){
+      res.send(err);
+      console.log(err);
+    }else{
+      res.json(result);
+      console.log("Album sent");
+    }
+  });
+});
+
+app.post("/new/song", uploadAudio.single("song"), function(req, res){
+  var album_id = req.body.album_id;
+  var name = req.body.name;
+  var song_path = "uploads/songs/"+req.file.filename;
+  var query = "INSERT INTO songs (name, song, album_id) VALUES (?, ?, ?)";
+  con.query(query, [name, song_path, album_id], function(err, result){
+    if(err){
+      res.send(err);
+      console.log(err);
+    }else{
+      res.json(result);
+      console.log("Song added");
+    }
+  });
+});
+
+app.get("/albums/:id/songs", function(req, res){
+  var album_id = req.params.id;
+  var query = "SELECT * FROM songs WHERE album_id = ?";
+  con.query(query, album_id, function(err, result){
+    if(err){
+      res.send(err);
+      console.log(err);
+    }else{
+      res.json(result);
+      console.log("Song sent");
+    }
+  });
+});
+
 
 app.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function(){
   console.log("server listening at", process.env.IP + ":" + process.env.PORT);

@@ -1,0 +1,47 @@
+<div id="album" ng-controller="albumCtrl">
+    <nav class="sidebar">
+        <input type="text" name="search" value="Search"/>
+        <header>
+            <h4><a href="#!menu">Menu</a></h4>
+        </header>
+        <ul>
+            <li>Recently played</li>
+        </ul>
+        
+        <h3>{{current_user.username}}<a ng-click="logOut()">Logout</a></h3>
+    </nav>
+    
+    <section class="row">
+        <div id="albums" class="col-4 albums-large">
+            <ul>
+                <li>
+                    <div class="album-image">
+                        <a ng-href=#!albums/{{album.id}}> 
+                            <img ng-src="{{album.image}}"></img>
+                            <div class="play-album">
+                               <i class="fa fa-play-circle fa-3x play-album"></i> 
+                            </div>
+                        </a>
+                    </div>
+                    <h2>{{album.name}}</h2>
+                    <p>{{album.username}}</p>
+                </li>
+            </ul>
+        </div>
+            
+        <div id="songs" class="col">
+            <ol>
+                <li ng-repeat="song in songs">
+                    <span class="song-name"><i class="fa fa-play play-song"></i> {{song.name}}</span>
+                </li>
+            </ol>
+            <form id="song-form">
+                <input type="text" name="name" ng-model="name" required/>
+                <input class="button" ngf-select type="file" ng-model="song" name="song" ngf-pattern="'audio/*'"
+                ngf-accept="'audio/*'" ngf-max-size="20MB"  required>
+                <input type="submit" value="Submit" ng-click="addSong(name, song)"/>
+                <audio controls ngf-src="song"></audio>
+            </form>
+        </div>
+    </section>
+</div>

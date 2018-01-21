@@ -55,7 +55,7 @@ form .btn {
   text-align: center;
 }
 
-#menu {
+#menu, #album {
   margin: 0 auto;
   height: 100%;
   width: 100%;
@@ -106,9 +106,9 @@ form .btn {
   text-align: center;
   color: white;
 }
-#albums h3 {
+#albums h2, #albums h3 {
   text-align: center;
-  color: #c4c4c4;
+  color: White;
 }
 #albums p {
   text-align: center;
@@ -149,6 +149,60 @@ form .btn {
 #albums .album-image .play-album i:hover {
   opacity: 1;
   color: white;
+}
+
+.albums-large {
+  padding-top: 4em;
+  padding-left: 4em;
+}
+.albums-large .album-image {
+  width: 400px !important;
+  height: 400px !important;
+}
+.albums-large i {
+  padding-top: 180px !important;
+}
+
+#songs {
+  padding-top: 2em;
+}
+#songs ol {
+  list-style: none;
+}
+#songs ol li {
+  color: white;
+  counter-increment: item;
+  transition: all .3s;
+  padding: .5em 0;
+}
+#songs ol li:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+#songs ol li:hover i {
+  opacity: 1;
+}
+#songs ol li:hover:before {
+  opacity: 0;
+}
+#songs ol li:before {
+  content: counter(item);
+  color: #c4c4c4;
+  text-align: center;
+  vertical-align: middle;
+  display: inline-block;
+  text-indent: 20px;
+}
+#songs ol li i {
+  position: relative;
+  left: -16px;
+  color: white;
+  opacity: 0;
+}
+#songs ol li i:hover {
+  opacity: 1;
+}
+#songs ol li p {
+  margin: 0;
 }
 
 .dropzone {

@@ -22,6 +22,10 @@ app.config(function($routeProvider){
     
     .when("/menu", {
         templateUrl: "../templates/menu.html"
+    })
+    
+    .when("/albums/:id", {
+        templateUrl: "../templates/album.html"
     });
 });
 
@@ -92,7 +96,6 @@ app.controller("mainMenuCtrl", function($scope, $rootScope, $cookies, $http, Upl
                     }else{
                         $scope.albums = response.data;  
                     }
-                    console.log($scope.albums);
                 }
             },
             
@@ -107,11 +110,63 @@ app.controller("mainMenuCtrl", function($scope, $rootScope, $cookies, $http, Upl
             data: {name: name, image: image, artist_id: $scope.current_user.id}
         }).then(function (resp) {
             $scope.getAlbums();
-            console.log('Success ' + resp);
+            console.log('Success' + resp);
         });
     };
     
     $scope.getAlbums();
+});
+
+// Album controller
+app.controller("albumCtrl", function($scope, $rootScope, $cookies, $http, $routeParams, Upload){
+    $scope.current_user = current_user();
+    
+    $scope.getAlbum = function(){
+         request($http, "GET", "/albums/"+$routeParams.id, {},
+            function success(response){
+                if(response.data.length == 0){
+                    $scope.messages = ["No albums"];
+                }else{
+                    $scope.album = response.data[0];  
+                }
+            },
+            
+            function error(response){
+                console.log(response);
+            });   
+    };
+    
+    $scope.getSongs = function(){
+         request($http, "GET", "/albums/"+$routeParams.id+"/songs", {},
+            function success(response){
+                if(response.data.length == 0){
+                    $scope.messages = ["No albums"];
+                }else{
+                    if(!Array.isArray(response.data)){
+                        $scope.songs = [response.data]; 
+                    }else{
+                        $scope.songs = response.data;  
+                    }  
+                }
+            },
+            
+            function error(response){
+                console.log(response);
+            });   
+    };
+    
+     $scope.addSong = function(name, song){
+        Upload.upload({
+            url: '/new/song',
+            data: {name: name, song: song, album_id: $routeParams.id}
+        }).then(function (resp) {
+            $scope.getSongs();
+            console.log('Success' + resp);
+        });
+    };
+    
+    $scope.getAlbum();
+    $scope.getSongs();
 });
 
  function request($http, method, url, data, success, error){
@@ -137,4 +192,10 @@ function isLoggedIn(){
     }else{
         return false;
     }
+}
+
+function logOut(){
+    window.sessionStorage.clear();
+    window.sessionStorage.clear();
+    redirectTo("#!login");
 }

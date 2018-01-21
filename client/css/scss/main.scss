@@ -57,7 +57,7 @@ form{
     }
 }
 
-#menu{
+#menu, #album{
     margin: 0 auto;
     height: 100%;
     width: 100%; 
@@ -111,9 +111,9 @@ form{
         color: white;
     }
     
-    h3{
+    h2, h3{
         text-align: center;
-        color: $light-grey;
+        color: White;
     }
     
     p{
@@ -157,6 +157,65 @@ form{
                     opacity: 1;
                     color: white;
                 }
+            }
+        }
+    }
+}
+
+.albums-large{
+    padding-top: 4em;
+    padding-left: 4em;
+    .album-image{
+        width: 400px !important;
+        height: 400px !important;
+    }
+    
+    i{
+        padding-top: 180px !important;
+    }
+}
+
+#songs{
+    padding-top: 2em;
+    ol{
+        list-style: none; 
+        li{
+            color: white;
+            counter-increment: item;
+            transition: all .3s;
+            padding: .5em 0;
+            &:hover{
+                background: rgba(0,0,0,.3);
+                i{
+                  opacity: 1;   
+                }  
+                
+                &:before{
+                    opacity: 0;  
+                }
+            } 
+            
+            &:before {
+                content: counter(item);
+                color: $light-grey;
+                text-align: center;
+                vertical-align: middle;
+                display: inline-block;
+                text-indent: 20px;
+            }
+            
+            i{
+                position: relative;
+                left: -16px;
+                color: white;
+                opacity: 0;
+                &:hover{
+                     opacity: 1;   
+                }  
+            }
+            
+            p{
+                margin: 0;
             }
         }
     }
