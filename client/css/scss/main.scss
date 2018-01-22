@@ -68,6 +68,10 @@ form{
     height: 100%;
     background: rgba(0, 0, 0, .5);
     padding: 1em;
+    h1,h2,h3{
+        color: white;
+    }
+    
     header{
         border-bottom: 1px solid #777777; 
         padding: .4em 0;
@@ -75,6 +79,7 @@ form{
             font-weight: 900;
             color: $light-grey; 
             transition: all .5s;
+            text-decoration: none;
             &:hover{
                 color:white;
             }
@@ -82,13 +87,17 @@ form{
     }
     
     li{
-        transition: all .5s;
         color: #adadad;
         letter-spacing: 2px;
-        &:hover{
-            color: white;
+        a{
+            transition: all .5s;
+            &:hover{
+                cursor: pointer; 
+                color:white !important;
+            }
         }
     }
+    
     input{
         font-weight: 900;
         color: $light-grey;
@@ -231,7 +240,7 @@ form{
     position: fixed;
     bottom: 0;
     width: 100%;
-    padding: 1em;
+    padding: 1.5em 0;
     background: #161616;
     audio{
         display: block;
@@ -268,6 +277,13 @@ form{
                 }
                 flex: 1;
             }        
+        }
+        .slider{
+            margin: 0 auto;
+            width: 30%;
+            background: grey;
+            border-radius: 10px;
+            height: 2px;
         }
     }
 }

@@ -67,6 +67,9 @@ form .btn {
   background: rgba(0, 0, 0, 0.5);
   padding: 1em;
 }
+.sidebar h1, .sidebar h2, .sidebar h3 {
+  color: white;
+}
 .sidebar header {
   border-bottom: 1px solid #777777;
   padding: .4em 0;
@@ -75,17 +78,21 @@ form .btn {
   font-weight: 900;
   color: #c4c4c4;
   transition: all .5s;
+  text-decoration: none;
 }
 .sidebar header a:hover {
   color: white;
 }
 .sidebar li {
-  transition: all .5s;
   color: #adadad;
   letter-spacing: 2px;
 }
-.sidebar li:hover {
-  color: white;
+.sidebar li a {
+  transition: all .5s;
+}
+.sidebar li a:hover {
+  cursor: pointer;
+  color: white !important;
 }
 .sidebar input {
   font-weight: 900;
@@ -215,7 +222,7 @@ form .btn {
   position: fixed;
   bottom: 0;
   width: 100%;
-  padding: 1em;
+  padding: 1.5em 0;
   background: #161616;
 }
 #player-bar audio {
@@ -250,6 +257,13 @@ form .btn {
 #player-bar #player-dashboard .player-buttons li i:hover {
   cursor: pointer;
   color: white;
+}
+#player-bar #player-dashboard .slider {
+  margin: 0 auto;
+  width: 30%;
+  background: grey;
+  border-radius: 10px;
+  height: 2px;
 }
 
 #footer {

@@ -15,19 +15,20 @@
       <p>&copy;</p>  
     </footer>
     
-    <div id="player-bar" ng-show="isLoggedIn">
+    <div id="player-bar" ng-show="isLoggedIn()">
         <div class="album-info">
-          <h3>{{song_name}} Song name</h3>
-          <p>{{album_name}} Album name</p>
+          <h3>{{song_name}}</h3>
+          <p>{{album_name}}</p>
         </div>
         <div id="player-dashboard">
           <ul class="player-buttons">
             <li><i class="fa fa-step-backward" aria-hidden="true"></i></li>
-            <li><i class="fa fa-play-circle fa-2x" aria-hidden="true"></i></li>
+            <li><i class="fa fa-2x" ng-class="{'fa-pause-circle': !paused, 'fa-play-circle': paused}" ng-click="playToggle()" aria-hidden="true"></i></li>
             <li><i class="fa fa-step-forward" aria-hidden="true"></i></li>
           </ul>
-          <audio controls>
-            <source ng-src={{song_path}} type="audio/ogg">
+          <div class="slider"></div>
+          <audio id="audio">
+            <source ng-src={{song_path}} type="audio/mp3">
             <source ng-src={{song_path}} type="audio/mpeg">
           </audio>
         </div>

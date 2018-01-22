@@ -3,13 +3,7 @@ app.config(function($routeProvider){
     $routeProvider
     .when("/", {
         templateUrl: "../templates/start.html",
-        resolve:{
-            init:function($cookies){
-                    if($cookies.get("user_id")){
-                        redirectTo("#!menu");
-                    }
-                }
-        }
+        resolve:{init:function(){loginRedirect()}}
     })
     
     .when("/signup", {
@@ -21,12 +15,54 @@ app.config(function($routeProvider){
     })
     
     .when("/menu", {
-        templateUrl: "../templates/menu.html"
+        templateUrl: "../templates/menu.html",
+        resolve:{init:function($rootScope){
+            logoutRedirect();
+            $rootScope.current_user = current_user();
+        }}
     })
     
     .when("/albums/:id", {
-        templateUrl: "../templates/album.html"
+        templateUrl: "../templates/album.html",
+        resolve:{init:function($rootScope){
+            logoutRedirect();
+            $rootScope.current_user = current_user();
+        }}
     });
+});
+
+app.run(function($rootScope) {
+    $rootScope.paused = true;
+    $rootScope.logOut = function() {
+        window.localStorage.clear();
+        window.sessionStorage.clear();
+        redirectTo("#!");
+    };
+    
+    $rootScope.isLoggedIn = function(){
+        return isLoggedIn();
+    }; 
+    
+    $rootScope.playSong = function(song, album){
+        var audio = document.getElementById('audio');
+        audio.load();
+        audio.play();
+        $rootScope.song_path = song.song;
+        $rootScope.song_name = song.name;
+        $rootScope.album_name = album.name;
+        $rootScope.paused = false;
+    }; 
+    
+     $rootScope.playToggle = function(){
+        var audio = document.getElementById('audio');
+        if(audio.paused){
+            audio.play();
+            $rootScope.paused = false;
+        }else{
+            audio.pause();
+            $rootScope.paused = true;
+        }
+    };
 });
 
 // Signup controller
@@ -83,8 +119,7 @@ app.controller("loginCtrl", function($scope, $rootScope, $http, $window){
 
 // Menu controller
 app.controller("mainMenuCtrl", function($scope, $rootScope, $cookies, $http, Upload){
-    $scope.current_user = current_user();
-    
+
     $scope.getAlbums = function(){
          request($http, "GET", "/albums", {},
             function success(response){
@@ -107,7 +142,7 @@ app.controller("mainMenuCtrl", function($scope, $rootScope, $cookies, $http, Upl
     $scope.addAlbum = function(name, image){
         Upload.upload({
             url: '/new/album',
-            data: {name: name, image: image, artist_id: $scope.current_user.id}
+            data: {name: name, image: image, artist_id: $rootScope.current_user.id}
         }).then(function (resp) {
             $scope.getAlbums();
             console.log('Success' + resp);
@@ -169,14 +204,14 @@ app.controller("albumCtrl", function($scope, $rootScope, $cookies, $http, $route
     $scope.getSongs();
 });
 
- function request($http, method, url, data, success, error){
-         $http({
-            method: method,
-            url: url,
-            data: data
-            }).then(function(response){success(response)},
-            function(response){error(response)}); 
-    }
+function request($http, method, url, data, success, error){
+     $http({
+        method: method,
+        url: url,
+        data: data
+        }).then(function(response){success(response)},
+        function(response){error(response)}); 
+}
 
 function redirectTo(path){
     window.location = path;
@@ -194,8 +229,14 @@ function isLoggedIn(){
     }
 }
 
-function logOut(){
-    window.sessionStorage.clear();
-    window.sessionStorage.clear();
-    redirectTo("#!login");
+function loginRedirect(){
+    if(isLoggedIn()){
+        redirectTo("#!menu");
+    }
+}
+
+function logoutRedirect(){
+    if(!isLoggedIn()){
+        redirectTo("#!");
+    }
 }

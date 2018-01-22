@@ -6,17 +6,19 @@
         </header>
         <ul>
             <li>Recently played</li>
+            <li>        
+                <h3>{{current_user.username}}</h3>
+                <a ng-click="logOut()">Logout</a>
+            </li>
         </ul>
-        
-        <h3>{{current_user.username}}<a ng-click="logOut()">Logout</a></h3>
     </nav>
     
     <section class="row">
-        <div id="albums" class="col-4 albums-large">
+        <div id="albums" class="col albums-large">
             <ul>
                 <li>
                     <div class="album-image">
-                        <a ng-href=#!albums/{{album.id}}> 
+                        <a> 
                             <img ng-src="{{album.image}}"></img>
                             <div class="play-album">
                                <i class="fa fa-play-circle fa-3x play-album"></i> 
@@ -32,7 +34,7 @@
         <div id="songs" class="col">
             <ol>
                 <li ng-repeat="song in songs">
-                    <span class="song-name"><i class="fa fa-play play-song"></i> {{song.name}}</span>
+                    <span class="song-name" ng-click="playSong(song, album)"><i class="fa fa-play play-song"></i> {{song.name}}</span>
                 </li>
             </ol>
             <form id="song-form">
