@@ -1,3 +1,4 @@
+var interval;
 var app = angular.module("angularMusic", ["ngRoute", "ngCookies", 'ngFileUpload']);
 app.config(function($routeProvider){
     $routeProvider
@@ -45,23 +46,56 @@ app.run(function($rootScope) {
     
     $rootScope.playSong = function(song, album){
         var audio = document.getElementById('audio');
+        var progress = document.getElementById('progress');
+        var currentTime = document.getElementById('current-time');
+        var album_name = document.getElementById('album-name');
+        var song_name = document.getElementById('song-name');
+        audio.setAttribute("src", song.song);
+        song_name.textContent = song.name;
+        album_name.textContent = album.name;
         audio.load();
-        audio.play();
-        $rootScope.song_path = song.song;
-        $rootScope.song_name = song.name;
-        $rootScope.album_name = album.name;
+        audio.oncanplay = function(){
+            audio.play();
+        };
+        $rootScope.current_song = song;
         $rootScope.paused = false;
+        toggleTimer(audio, progress, $rootScope, currentTime);
+        audio.onended = function(){
+            $rootScope.nextSong($rootScope.current_song, $rootScope.album);
+        };
     }; 
     
      $rootScope.playToggle = function(){
         var audio = document.getElementById('audio');
+        var progress = document.getElementById('progress');
+        var currentTime = document.getElementById('current-time');
         if(audio.paused){
             audio.play();
+            toggleTimer(audio, progress, $rootScope, currentTime);
             $rootScope.paused = false;
         }else{
             audio.pause();
+            toggleTimer(audio, progress, $rootScope, currentTime);
             $rootScope.paused = true;
         }
+    };
+    
+    $rootScope.nextSong = function(song, album){
+        var songs = $rootScope.current_songs;
+        var nextSongIndex = songs.indexOf(song)+1;
+        if(nextSongIndex > songs.length-1){
+            nextSongIndex = 0;
+        }
+        $rootScope.playSong(songs[nextSongIndex], album);
+    };
+    
+     $rootScope.previousSong = function(song, album){
+        var songs = $rootScope.current_songs;
+        var nextSongIndex = songs.indexOf(song)-1;
+        if(nextSongIndex < 0){
+            nextSongIndex = songs.length-1;
+        }
+        $rootScope.playSong(songs[nextSongIndex], album);
     };
 });
 
@@ -162,7 +196,7 @@ app.controller("albumCtrl", function($scope, $rootScope, $cookies, $http, $route
                 if(response.data.length == 0){
                     $scope.messages = ["No albums"];
                 }else{
-                    $scope.album = response.data[0];  
+                    $rootScope.album = response.data[0];  
                 }
             },
             
@@ -178,9 +212,9 @@ app.controller("albumCtrl", function($scope, $rootScope, $cookies, $http, $route
                     $scope.messages = ["No albums"];
                 }else{
                     if(!Array.isArray(response.data)){
-                        $scope.songs = [response.data]; 
+                        $rootScope.current_songs = $scope.songs = [response.data]; 
                     }else{
-                        $scope.songs = response.data;  
+                        $rootScope.current_songs = $scope.songs = response.data;  
                     }  
                 }
             },
@@ -203,6 +237,8 @@ app.controller("albumCtrl", function($scope, $rootScope, $cookies, $http, $route
     $scope.getAlbum();
     $scope.getSongs();
 });
+
+// Global functions
 
 function request($http, method, url, data, success, error){
      $http({
@@ -240,3 +276,28 @@ function logoutRedirect(){
         redirectTo("#!");
     }
 }
+
+function toggleTimer(audio, progressbar, $rootScope, currentTime){
+    var totalTime = document.getElementById('total-time');
+    if($rootScope.paused){
+        clearInterval(interval);
+    }else{
+     interval = setInterval(function(){
+            totalTime.textContent = formatTime(audio.duration);
+            currentTime.textContent = formatTime(audio.currentTime);
+            var width = audio.currentTime/audio.duration * 100; 
+            progressbar.setAttribute("style", "width:"+width+"%");
+            },100);
+    }
+}
+
+function formatTime(seconds) {
+    var minutes;
+    minutes = Math.floor(seconds / 60);
+    minutes = (minutes >= 10) ? minutes : "0" + minutes;
+    seconds = Math.floor(seconds % 60);
+    seconds = (seconds >= 10) ? seconds : "0" + seconds;
+    return minutes + ":" + seconds;
+}
+
+

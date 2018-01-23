@@ -1,18 +1,4 @@
 <div id="album" ng-controller="albumCtrl">
-    <nav class="sidebar">
-        <input type="text" name="search" value="Search"/>
-        <header>
-            <h4><a href="#!menu">Menu</a></h4>
-        </header>
-        <ul>
-            <li>Recently played</li>
-            <li>        
-                <h3>{{current_user.username}}</h3>
-                <a ng-click="logOut()">Logout</a>
-            </li>
-        </ul>
-    </nav>
-    
     <section class="row">
         <div id="albums" class="col albums-large">
             <ul>

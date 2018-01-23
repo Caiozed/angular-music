@@ -75,13 +75,13 @@ form .btn {
   padding: .4em 0;
 }
 .sidebar header a {
-  font-weight: 900;
   color: #c4c4c4;
-  transition: all .5s;
   text-decoration: none;
+  transition: all .5s;
 }
 .sidebar header a:hover {
-  color: white;
+  cursor: pointer;
+  color: white !important;
 }
 .sidebar li {
   color: #adadad;
@@ -95,8 +95,8 @@ form .btn {
   color: white !important;
 }
 .sidebar input {
-  font-weight: 900;
   color: #c4c4c4;
+  font-weight: 900;
   padding: .5em 0;
   width: 200px;
   border-left: none;
@@ -107,6 +107,15 @@ form .btn {
   background: none;
   display: block;
   margin: 0 auto;
+}
+.sidebar a {
+  color: #c4c4c4 !important;
+  text-decoration: none;
+  transition: all .5s;
+}
+.sidebar a:hover {
+  cursor: pointer;
+  color: white !important;
 }
 
 #albums h1 {
@@ -258,12 +267,28 @@ form .btn {
   cursor: pointer;
   color: white;
 }
-#player-bar #player-dashboard .slider {
+#player-bar #player-dashboard #progress-bar {
+  color: #c4c4c4;
+}
+#player-bar #player-dashboard #progress-bar .slider {
   margin: 0 auto;
   width: 30%;
   background: grey;
   border-radius: 10px;
   height: 2px;
+}
+#player-bar #player-dashboard #progress-bar .slider #progress {
+  width: 0;
+  height: 100%;
+  background: white;
+}
+#player-bar #player-dashboard #progress-bar .slider #current-time {
+  font-size: 12px;
+  float: left;
+}
+#player-bar #player-dashboard #progress-bar .slider #total-time {
+  font-size: 12px;
+  float: right;
 }
 
 #footer {

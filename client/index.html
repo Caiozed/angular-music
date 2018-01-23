@@ -8,6 +8,18 @@
     <link rel="stylesheet" href="css/main.css" type="text/css" />
   </head>
   <body>
+    <nav class="sidebar" ng-show="isLoggedIn()">
+        <input type="text" name="search" value="Search"/>
+        <header>
+            <h4><a href="#!menu">Menu</a></h4>
+        </header>
+        <ul>
+            <li>Recently played</li>
+        </ul>
+        
+        <h3>{{current_user.username}}</h3>
+        <a ng-click="logOut()">Logout</a>
+    </nav>
     <div id="content" ng-view >
       
     </div>
@@ -15,22 +27,27 @@
       <p>&copy;</p>  
     </footer>
     
+    
+    
     <div id="player-bar" ng-show="isLoggedIn()">
         <div class="album-info">
-          <h3>{{song_name}}</h3>
-          <p>{{album_name}}</p>
+          <h3 id="song-name"></h3>
+          <p id="album-name"></p>
         </div>
         <div id="player-dashboard">
           <ul class="player-buttons">
-            <li><i class="fa fa-step-backward" aria-hidden="true"></i></li>
+            <li><i class="fa fa-step-backward" aria-hidden="true" ng-click="previousSong(current_song, album)"></i></li>
             <li><i class="fa fa-2x" ng-class="{'fa-pause-circle': !paused, 'fa-play-circle': paused}" ng-click="playToggle()" aria-hidden="true"></i></li>
-            <li><i class="fa fa-step-forward" aria-hidden="true"></i></li>
+            <li><i class="fa fa-step-forward" aria-hidden="true" ng-click="nextSong(current_song, album)"></i></li>
           </ul>
-          <div class="slider"></div>
-          <audio id="audio">
-            <source ng-src={{song_path}} type="audio/mp3">
-            <source ng-src={{song_path}} type="audio/mpeg">
-          </audio>
+          <div id="progress-bar">
+            <div class="slider">
+              <span id="current-time">3:12</span>
+              <div id="progress"></div>
+              <span id="total-time">5:10</span>
+            </div>
+          </div>
+          <audio id="audio"></audio>
         </div>
     </div>
 
