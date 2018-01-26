@@ -27,13 +27,16 @@ form {
 }
 form label, form input {
   width: 200px;
-  margin: 0 auto;
+  margin: 5px auto;
   display: block;
   text-align: left;
 }
 form .btn {
   display: block;
   width: 80px;
+}
+form h1 {
+  text-align: center;
 }
 
 #content {
@@ -135,6 +138,9 @@ form .btn {
   margin: 0 5px;
 }
 #albums .album-image {
+  -webkit-box-shadow: 0px 0px 71px -2px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 71px -2px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 71px -2px rgba(0, 0, 0, 0.75);
   margin: 0 auto;
   width: 200px;
   height: 200px;
@@ -159,12 +165,19 @@ form .btn {
 #albums .album-image .play-album i {
   text-align: center;
   padding-top: 80px;
-  transition: all .5s;
   opacity: 0;
 }
 #albums .album-image .play-album i:hover {
   opacity: 1;
   color: white;
+}
+
+#album-form {
+  width: 50%;
+}
+
+.btn {
+  cursor: pointer;
 }
 
 .albums-large {
@@ -177,6 +190,11 @@ form .btn {
 }
 .albums-large i {
   padding-top: 180px !important;
+}
+
+.albums-thumb-playback .album-image {
+  width: 60px !important;
+  height: 60px !important;
 }
 
 #songs {
@@ -245,7 +263,14 @@ form .btn {
   left: 15px;
 }
 #player-bar .album-info p {
+  text-align: left;
   color: #c4c4c4;
+}
+#player-bar .album-info div {
+  float: left;
+}
+#player-bar .album-info .album-text {
+  margin-left: 6px;
 }
 #player-bar #player-dashboard .player-buttons {
   text-align: center;
@@ -267,6 +292,11 @@ form .btn {
   cursor: pointer;
   color: white;
 }
+#player-bar #player-dashboard .volume-container {
+  position: absolute;
+  top: 40%;
+  right: 80px;
+}
 #player-bar #player-dashboard #progress-bar {
   color: #c4c4c4;
 }
@@ -275,12 +305,17 @@ form .btn {
   width: 30%;
   background: grey;
   border-radius: 10px;
-  height: 2px;
+  height: 5px;
 }
 #player-bar #player-dashboard #progress-bar .slider #progress {
+  position: relative;
   width: 0;
   height: 100%;
+  border-radius: 10px;
   background: white;
+}
+#player-bar #player-dashboard #progress-bar .slider #progress .knob {
+  transform: scale(0, 0);
 }
 #player-bar #player-dashboard #progress-bar .slider #current-time {
   font-size: 12px;
@@ -289,6 +324,23 @@ form .btn {
 #player-bar #player-dashboard #progress-bar .slider #total-time {
   font-size: 12px;
   float: right;
+}
+#player-bar #player-dashboard #progress-bar .slider:hover #progress {
+  background: green;
+}
+#player-bar #player-dashboard #progress-bar .slider:hover #progress .knob {
+  transform: scale(1, 1);
+}
+
+.knob {
+  position: absolute;
+  right: -5px;
+  top: -2px;
+  width: 10px;
+  height: 10px;
+  transition: all .5s;
+  border-radius: 100%;
+  background: white;
 }
 
 #footer {

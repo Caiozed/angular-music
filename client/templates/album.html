@@ -1,35 +1,35 @@
 <div id="album" ng-controller="albumCtrl">
     <section class="row">
         <div id="albums" class="col albums-large">
-            <ul>
-                <li>
-                    <div class="album-image">
-                        <a> 
-                            <img ng-src="{{album.image}}"></img>
-                            <div class="play-album">
-                               <i class="fa fa-play-circle fa-3x play-album"></i> 
-                            </div>
-                        </a>
+            <div class="album-image">
+                <a> 
+                    <img ng-src="{{album.image}}"></img>
+                    <div class="play-album" ng-click="playSong(current_song, album)">
+                       <i class="fa fa-play-circle fa-3x play-album"></i> 
                     </div>
-                    <h2>{{album.name}}</h2>
-                    <p>{{album.username}}</p>
-                </li>
-            </ul>
+                </a>
+            </div>
+            <h2>{{album.name}}</h2>
+            <p>{{album.username}}</p>
         </div>
             
-        <div id="songs" class="col">
+        <div id="songs" class="col-7">
             <ol>
                 <li ng-repeat="song in songs">
                     <span class="song-name" ng-click="playSong(song, album)"><i class="fa fa-play play-song"></i> {{song.name}}</span>
                 </li>
             </ol>
-            <form id="song-form">
+            
+        </div>
+        <form id="song-form" ng-show="currentUser().id == album.artist_id">
+                <h1>Add new song</h1>
+                <label>Song name</label>
                 <input type="text" name="name" ng-model="name" required/>
+                <label>Song File</label>
                 <input class="button" ngf-select type="file" ng-model="song" name="song" ngf-pattern="'audio/*'"
                 ngf-accept="'audio/*'" ngf-max-size="20MB"  required>
-                <input type="submit" value="Submit" ng-click="addSong(name, song)"/>
+                <input class="btn btn-success" type="submit" value="Submit" ng-click="addSong(name, song)"/>
                 <audio controls ngf-src="song"></audio>
             </form>
-        </div>
     </section>
 </div>

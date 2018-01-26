@@ -1,4 +1,5 @@
 var interval;
+
 var app = angular.module("angularMusic", ["ngRoute", "ngCookies", 'ngFileUpload']);
 app.config(function($routeProvider){
     $routeProvider
@@ -33,6 +34,26 @@ app.config(function($routeProvider){
 });
 
 app.run(function($rootScope) {
+    var audio = document.getElementById('audio');
+    var progress = document.getElementById('progress');
+    var currentTime = document.getElementById('current-time');
+    var album_name = document.getElementById('album-name');
+    var song_name = document.getElementById('song-name');
+    var volume = document.getElementById('volume');
+    var playerImage = document.getElementById('playerbar-image');
+    
+    volume.oninput = function() {
+        audio.volume = this.value/100;
+    };
+    
+    audio.oncanplay = function(){
+        audio.play();
+    };
+    
+    audio.onended = function(){
+        $rootScope.nextSong($rootScope.current_song, $rootScope.album);
+    };
+        
     $rootScope.paused = true;
     $rootScope.logOut = function() {
         window.localStorage.clear();
@@ -44,25 +65,20 @@ app.run(function($rootScope) {
         return isLoggedIn();
     }; 
     
+    $rootScope.currentUser = function(){
+        return current_user();
+    }; 
+    
     $rootScope.playSong = function(song, album){
-        var audio = document.getElementById('audio');
-        var progress = document.getElementById('progress');
-        var currentTime = document.getElementById('current-time');
-        var album_name = document.getElementById('album-name');
-        var song_name = document.getElementById('song-name');
         audio.setAttribute("src", song.song);
+        playerImage.setAttribute("src", album.image);
         song_name.textContent = song.name;
         album_name.textContent = album.name;
         audio.load();
-        audio.oncanplay = function(){
-            audio.play();
-        };
         $rootScope.current_song = song;
+        $rootScope.current_album = album;
         $rootScope.paused = false;
         toggleTimer(audio, progress, $rootScope, currentTime);
-        audio.onended = function(){
-            $rootScope.nextSong($rootScope.current_song, $rootScope.album);
-        };
     }; 
     
      $rootScope.playToggle = function(){
@@ -81,6 +97,7 @@ app.run(function($rootScope) {
     };
     
     $rootScope.nextSong = function(song, album){
+        $rootScope.paused = false;
         var songs = $rootScope.current_songs;
         var nextSongIndex = songs.indexOf(song)+1;
         if(nextSongIndex > songs.length-1){
@@ -90,6 +107,7 @@ app.run(function($rootScope) {
     };
     
      $rootScope.previousSong = function(song, album){
+        $rootScope.paused = false;
         var songs = $rootScope.current_songs;
         var nextSongIndex = songs.indexOf(song)-1;
         if(nextSongIndex < 0){
@@ -189,14 +207,13 @@ app.controller("mainMenuCtrl", function($scope, $rootScope, $cookies, $http, Upl
 // Album controller
 app.controller("albumCtrl", function($scope, $rootScope, $cookies, $http, $routeParams, Upload){
     $scope.current_user = current_user();
-    
     $scope.getAlbum = function(){
          request($http, "GET", "/albums/"+$routeParams.id, {},
             function success(response){
                 if(response.data.length == 0){
                     $scope.messages = ["No albums"];
                 }else{
-                    $rootScope.album = response.data[0];  
+                    $scope.album = response.data[0]; 
                 }
             },
             
@@ -213,8 +230,10 @@ app.controller("albumCtrl", function($scope, $rootScope, $cookies, $http, $route
                 }else{
                     if(!Array.isArray(response.data)){
                         $rootScope.current_songs = $scope.songs = [response.data]; 
+                        $scope.setCurrentSong(response.data);
                     }else{
                         $rootScope.current_songs = $scope.songs = response.data;  
+                        $scope.setCurrentSong(response.data[0]);
                     }  
                 }
             },
@@ -232,6 +251,12 @@ app.controller("albumCtrl", function($scope, $rootScope, $cookies, $http, $route
             $scope.getSongs();
             console.log('Success' + resp);
         });
+    };
+    
+    $scope.setCurrentSong = function(data){
+        if($rootScope.current_song == undefined){
+            $rootScope.current_song = data;
+        } 
     };
     
     $scope.getAlbum();
@@ -286,7 +311,7 @@ function toggleTimer(audio, progressbar, $rootScope, currentTime){
             totalTime.textContent = formatTime(audio.duration);
             currentTime.textContent = formatTime(audio.currentTime);
             var width = audio.currentTime/audio.duration * 100; 
-            progressbar.setAttribute("style", "width:"+width+"%");
+            progressbar.setAttribute("value", width);
             },100);
     }
 }
