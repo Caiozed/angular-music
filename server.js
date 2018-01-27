@@ -119,7 +119,7 @@ app.get("/albums", function(req, res){
 
 app.get("/albums/:id", function(req, res){
   var id = req.params.id;
-  var query = "SELECT * FROM albums WHERE id = ?";
+  var query = "SELECT username, name, image, artist_id FROM albums INNER JOIN users ON users.id = albums.artist_id WHERE albums.id = ?";
   con.query(query, id, function(err, result){
     if(err){
       res.send(err);

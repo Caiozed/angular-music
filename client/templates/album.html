@@ -4,7 +4,7 @@
             <div class="album-image">
                 <a> 
                     <img ng-src="{{album.image}}"></img>
-                    <div class="play-album" ng-click="playSong(current_song, album)">
+                    <div ng-show="songs" class="play-album" ng-click="playSong(current_song, album)">
                        <i class="fa fa-play-circle fa-3x play-album"></i> 
                     </div>
                 </a>

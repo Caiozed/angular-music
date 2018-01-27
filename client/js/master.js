@@ -41,8 +41,10 @@ app.run(function($rootScope) {
     var song_name = document.getElementById('song-name');
     var volume = document.getElementById('volume');
     var playerImage = document.getElementById('playerbar-image');
+    var fillVoluemArea = document.getElementsByClassName('fill-bar')[0];
     
     volume.oninput = function() {
+        fillVoluemArea.style.width = this.value+"%";
         audio.volume = this.value/100;
     };
     
@@ -311,7 +313,7 @@ function toggleTimer(audio, progressbar, $rootScope, currentTime){
             totalTime.textContent = formatTime(audio.duration);
             currentTime.textContent = formatTime(audio.currentTime);
             var width = audio.currentTime/audio.duration * 100; 
-            progressbar.setAttribute("value", width);
+            progressbar.style.width = width+"%";
             },100);
     }
 }
