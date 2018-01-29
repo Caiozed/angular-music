@@ -15,6 +15,9 @@
         </header>
         <ul>
             <li>Recently played</li>
+            <li ng-repeat="previous_album in previous_albums">
+              <a ng-href="#!albums/{{previous_album.id}}">{{previous_album.name}}</a>
+            </li>
         </ul>
         
         <h3>{{current_user.username}}</h3>
@@ -34,7 +37,7 @@
          <div id="albums" class="albums-thumb-playback">
             <div class="album-image">
                 <a> 
-                   <img id="playerbar-image" ></img>
+                   <img id="playerbar-image"></img>
                 </a>
             </div>
             <div class="album-text">

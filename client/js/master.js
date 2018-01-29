@@ -34,6 +34,7 @@ app.config(function($routeProvider){
 });
 
 app.run(function($rootScope) {
+    $rootScope.previous_albums = JSON.parse(window.localStorage.getItem("previous_albums"));
     var audio = document.getElementById('audio');
     var progress = document.getElementById('progress');
     var currentTime = document.getElementById('current-time');
@@ -76,6 +77,7 @@ app.run(function($rootScope) {
         playerImage.setAttribute("src", album.image);
         song_name.textContent = song.name;
         album_name.textContent = album.name;
+        $rootScope.setPreviousAlbums(album);
         audio.load();
         $rootScope.current_song = song;
         $rootScope.current_album = album;
@@ -116,6 +118,57 @@ app.run(function($rootScope) {
             nextSongIndex = songs.length-1;
         }
         $rootScope.playSong(songs[nextSongIndex], album);
+    };
+    
+    $rootScope.setPreviousAlbums = function(album){
+        var previous_albums = JSON.parse(window.localStorage.getItem("previous_albums"));
+        var readyToAdd = true;
+        if(previous_albums == null){
+            previous_albums = JSON.stringify([album]);
+        }else{
+            angular.forEach(previous_albums, function(prev, index){
+                if(prev.id == album.id){
+                    readyToAdd = false;
+                }
+            });
+            if(readyToAdd){
+                if(previous_albums.length > 5){
+                    previous_albums.pop(); 
+                    previous_albums.unshift(album);
+                }else{
+                    previous_albums.unshift(album);
+                }
+            }
+        }
+        window.localStorage.setItem("previous_albums", JSON.stringify(previous_albums));
+        $rootScope.previous_albums = previous_albums;
+    };
+    
+    $rootScope.setPreviousAlbums = function(album){
+        var previous_albums = JSON.parse(window.localStorage.getItem("previous_albums"));
+        var readyToAdd = true;
+        if(!Array.isArray(previous_albums)){
+            previous_albums = JSON.parse(previous_albums);
+        }
+        if(previous_albums == null){
+            previous_albums = JSON.stringify([album]);
+        }else{
+            angular.forEach(previous_albums, function(prev, index){
+                if(prev.id == album.id){
+                    readyToAdd = false;
+                }
+            });
+            if(readyToAdd){
+                if(previous_albums.length > 5){
+                    previous_albums.pop(); 
+                    previous_albums.unshift(album);
+                }else{
+                    previous_albums.unshift(album);
+                }
+            }
+        }
+        window.localStorage.setItem("previous_albums", JSON.stringify(previous_albums));
+        $rootScope.previous_albums = previous_albums;
     };
 });
 
