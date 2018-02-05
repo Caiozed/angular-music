@@ -1,0 +1,19 @@
+<div id="menu" ng-controller="searchCtrl">
+    <div id="albums">
+        <h1>Albums found</h1>
+        <ul>
+            <li ng-repeat="album in searched_albums">
+                <div class="album-image">
+                    <a ng-href=#!albums/{{album.id}}> 
+                        <img ng-src="{{album.image}}"></img>
+                        <div class="play-album">
+                           <i class="fa fa-play-circle fa-3x play-album"></i> 
+                        </div>
+                    </a>
+                </div>
+                <h3>{{album.name}}</h3>
+                <p>{{album.username}}</p>
+            </li>
+        </ul>
+    </div>
+</div>

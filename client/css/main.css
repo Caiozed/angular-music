@@ -26,7 +26,6 @@ form {
   margin: 0 auto;
 }
 form label, form input {
-  width: 200px;
   margin: 5px auto;
   display: block;
   text-align: left;
@@ -44,6 +43,7 @@ form h1 {
   width: 100%;
   padding: 0;
   margin: 0;
+  margin-bottom: 50px;
 }
 
 #start-header, #signup, #login {
@@ -238,6 +238,13 @@ form h1 {
 }
 #songs ol li p {
   margin: 0;
+}
+
+#song-form, #album-form {
+  width: 30%;
+}
+#song-form label, #album-form label {
+  font-size: 25px;
 }
 
 .dropzone {

@@ -1,5 +1,7 @@
+// Global interval varibale
 var interval;
 
+// Set routes for app 
 var app = angular.module("angularMusic", ["ngRoute", "ngCookies", 'ngFileUpload']);
 app.config(function($routeProvider){
     $routeProvider
@@ -30,10 +32,18 @@ app.config(function($routeProvider){
             logoutRedirect();
             $rootScope.current_user = current_user();
         }}
+    })
+    .when("/search", {
+        templateUrl: "../templates/search.html",
+        resolve:{init:function($rootScope){
+            logoutRedirect();
+            $rootScope.current_user = current_user();
+        }}
     });
 });
 
-app.run(function($rootScope) {
+// Initilization of variables used on app start
+app.run(function($rootScope, $http) {
     $rootScope.previous_albums = JSON.parse(window.localStorage.getItem("previous_albums"));
     var audio = document.getElementById('audio');
     var progress = document.getElementById('progress');
@@ -44,34 +54,43 @@ app.run(function($rootScope) {
     var playerImage = document.getElementById('playerbar-image');
     var fillVoluemArea = document.getElementsByClassName('fill-bar')[0];
     
+    // Event listener for volume range slider
     volume.oninput = function() {
         fillVoluemArea.style.width = this.value+"%";
         audio.volume = this.value/100;
     };
     
+    // Event listener on audio tag to play audio when ready
     audio.oncanplay = function(){
         audio.play();
     };
     
+     // Event listener to skip song on audio tag
     audio.onended = function(){
         $rootScope.nextSong($rootScope.current_song, $rootScope.album);
     };
-        
+    
+    // Variable used to check current playe state    
     $rootScope.paused = true;
+    
+    // Remove session and cookies from browser and redirects to root
     $rootScope.logOut = function() {
         window.localStorage.clear();
         window.sessionStorage.clear();
         redirectTo("#!");
     };
     
+    // Checks if user is logged in
     $rootScope.isLoggedIn = function(){
         return isLoggedIn();
     }; 
     
+    // Returns the current user object with id and username
     $rootScope.currentUser = function(){
         return current_user();
     }; 
     
+    // Play song based on parameters an update album info on page
     $rootScope.playSong = function(song, album){
         audio.setAttribute("src", song.song);
         playerImage.setAttribute("src", album.image);
@@ -82,10 +101,12 @@ app.run(function($rootScope) {
         $rootScope.current_song = song;
         $rootScope.current_album = album;
         $rootScope.paused = false;
+        // Start song timer bar
         toggleTimer(audio, progress, $rootScope, currentTime);
     }; 
     
-     $rootScope.playToggle = function(){
+    // Toggle between pause an play updating elements on page 
+    $rootScope.playToggle = function(){
         var audio = document.getElementById('audio');
         var progress = document.getElementById('progress');
         var currentTime = document.getElementById('current-time');
@@ -100,6 +121,7 @@ app.run(function($rootScope) {
         }
     };
     
+    // Skips to next song on songs array
     $rootScope.nextSong = function(song, album){
         $rootScope.paused = false;
         var songs = $rootScope.current_songs;
@@ -110,7 +132,8 @@ app.run(function($rootScope) {
         $rootScope.playSong(songs[nextSongIndex], album);
     };
     
-     $rootScope.previousSong = function(song, album){
+    // rewind to previous song on songs array
+    $rootScope.previousSong = function(song, album){
         $rootScope.paused = false;
         var songs = $rootScope.current_songs;
         var nextSongIndex = songs.indexOf(song)-1;
@@ -120,45 +143,26 @@ app.run(function($rootScope) {
         $rootScope.playSong(songs[nextSongIndex], album);
     };
     
+    // Set a cookie object with data of latest albums played
     $rootScope.setPreviousAlbums = function(album){
         var previous_albums = JSON.parse(window.localStorage.getItem("previous_albums"));
         var readyToAdd = true;
-        if(previous_albums == null){
-            previous_albums = JSON.stringify([album]);
-        }else{
-            angular.forEach(previous_albums, function(prev, index){
-                if(prev.id == album.id){
-                    readyToAdd = false;
-                }
-            });
-            if(readyToAdd){
-                if(previous_albums.length > 5){
-                    previous_albums.pop(); 
-                    previous_albums.unshift(album);
-                }else{
-                    previous_albums.unshift(album);
-                }
-            }
-        }
-        window.localStorage.setItem("previous_albums", JSON.stringify(previous_albums));
-        $rootScope.previous_albums = previous_albums;
-    };
-    
-    $rootScope.setPreviousAlbums = function(album){
-        var previous_albums = JSON.parse(window.localStorage.getItem("previous_albums"));
-        var readyToAdd = true;
+        // if object returned is not a array then sets object
         if(!Array.isArray(previous_albums)){
             previous_albums = JSON.parse(previous_albums);
         }
+        // if object returned is null creates new object
         if(previous_albums == null){
             previous_albums = JSON.stringify([album]);
         }else{
             angular.forEach(previous_albums, function(prev, index){
+                // Add only new albums not previosly played
                 if(prev.id == album.id){
                     readyToAdd = false;
                 }
             });
             if(readyToAdd){
+                // Add a maximum o 5 albums history
                 if(previous_albums.length > 5){
                     previous_albums.pop(); 
                     previous_albums.unshift(album);
@@ -167,9 +171,29 @@ app.run(function($rootScope) {
                 }
             }
         }
+        // Sets cookie object on localStorage
         window.localStorage.setItem("previous_albums", JSON.stringify(previous_albums));
+        // Set variable to be show on template
         $rootScope.previous_albums = previous_albums;
     };
+    
+    // Search controller
+    $rootScope.search_albums = function(search){
+        // reset variable on new search
+        $rootScope.searched_albums = null;
+        // Request to database with search parameters
+        request($http, "POST", "/search", {search: search},
+        function(response){
+            if(response.data.length > 0){
+               $rootScope.searched_albums = formatResponse(response);
+               redirectTo("#!search");
+            }
+        });    
+    };
+});
+
+app.controller("searchCtrl", function($scope, $rootScope, $cookies, $http){
+
 });
 
 // Signup controller
@@ -355,6 +379,16 @@ function logoutRedirect(){
     if(!isLoggedIn()){
         redirectTo("#!");
     }
+}
+
+function formatResponse(response){
+    var saveVariable;
+    if(!Array.isArray(response.data)){
+        saveVariable = [response.data]; 
+    }else{
+        saveVariable = response.data;  
+    }
+    return saveVariable;
 }
 
 function toggleTimer(audio, progressbar, $rootScope, currentTime){

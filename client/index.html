@@ -9,7 +9,10 @@
   </head>
   <body>
     <nav class="sidebar" ng-show="isLoggedIn()">
-        <input type="text" name="search" value="Search"/>
+        <form ng-submit="search_albums(search)"> 
+          <input type="text" name="search" ng-model="search" value="Search"/>     
+        </form>
+
         <header>
             <h4><a href="#!menu">Menu</a></h4>
         </header>

@@ -16,7 +16,10 @@
 --                     song varchar(500) NOT NULL,
 --                     album_id int NOT NULL,
 --                     UNIQUE (name));
+
                     
 -- select * from users;
 -- select * from albums;
-select * from songs;
+-- select * from songs;
+SELECT * FROM albums
+WHERE name LIKE '%?%';

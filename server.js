@@ -88,6 +88,20 @@ app.post("/login", function(req, res){
   });
 });
 
+app.post("/search", function(req, res){
+  var search = req.body.search;
+  var query = "SELECT * FROM albums WHERE name LIKE '%"+search+"%'";
+  con.query(query, function(err, result){
+    if(err){
+      res.send(err);
+      console.log(err);
+    }else{
+      res.send(result);
+      console.log("Albums sent");
+    }
+  });
+});
+
 app.post("/new/album", uploadImage.single('image'), function(req, res){
   var name = req.body.name;
   var image_path = "uploads/album/"+req.file.filename;

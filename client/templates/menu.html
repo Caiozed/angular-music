@@ -17,12 +17,17 @@
         </ul>
         <form id="album-form">
             <h1>Add a new album</h1>
-            <label>Name</label>
-            <input type="text" name="name" ng-model="name" required/>
-            <label>Image file</label>
-            <input class="button" ngf-select type="file" ng-model="image" name="image" ngf-pattern="'image/*'"
-            ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="200"
-            ngf-resize="{width: 500, height: 500}" required>
+            <div class="form-group">
+                <label>Name</label>
+                <input class="form-control" type="text" name="name" ng-model="name" required/>
+            </div>
+           
+            <div class="form-group">
+                <label>Image file</label>
+                <input class="button form-control" ngf-select type="file" ng-model="image" name="image" ngf-pattern="'image/*'"
+                ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="200"
+                ngf-resize="{width: 500, height: 500}" required>
+            </div>
             <input class="btn btn-success" type="submit" value="Submit" ng-click="addAlbum(name, image)"/>
         </form>
     </div>

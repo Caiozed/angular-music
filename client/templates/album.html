@@ -22,12 +22,17 @@
             
         </div>
         <form id="song-form" ng-show="currentUser().id == album.artist_id">
-                <h1>Add new song</h1>
+            <h1>Add new song</h1>
+            <div class="form-group"> 
                 <label>Song name</label>
-                <input type="text" name="name" ng-model="name" required/>
+                <input class="form-control" type="text" name="name" ng-model="name" required/>
+            </div>
+
+            <div class="form-group">     
                 <label>Song File</label>
-                <input class="button" ngf-select type="file" ng-model="song" name="song" ngf-pattern="'audio/*'"
+                <input class="form-control" class="button" ngf-select type="file" ng-model="song" name="song" ngf-pattern="'audio/*'"
                 ngf-accept="'audio/*'" ngf-max-size="20MB"  required>
+            </div>
                 <input class="btn btn-success" type="submit" value="Submit" ng-click="addSong(name, song)"/>
                 <audio controls ngf-src="song"></audio>
             </form>
