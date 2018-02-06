@@ -58,6 +58,9 @@ form{
          top: 30%;
          text-align: center;
     }
+    form{
+        width: 20%;
+    }
 }
 
 #menu, #album{
@@ -181,6 +184,11 @@ form{
                     opacity: 1;
                     color: white;
                 }
+            }
+            
+            button{
+                position: relative;
+                float: right;
             }
         }
     }

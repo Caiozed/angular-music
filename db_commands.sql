@@ -21,5 +21,6 @@
 -- select * from users;
 -- select * from albums;
 -- select * from songs;
-SELECT * FROM albums
-WHERE name LIKE '%?%';
+SELECT * FROM albums;
+SELECT * FROM songs;
+-- WHERE name LIKE '%?%';

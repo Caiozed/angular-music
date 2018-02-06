@@ -177,7 +177,7 @@ app.run(function($rootScope, $http) {
         $rootScope.previous_albums = previous_albums;
     };
     
-    // Search controller
+    // Search for album
     $rootScope.search_albums = function(search){
         // reset variable on new search
         $rootScope.searched_albums = null;
@@ -189,6 +189,21 @@ app.run(function($rootScope, $http) {
                redirectTo("#!search");
             }
         });    
+    };
+    
+    $rootScope.deleteAlbum = function(id){
+         request($http, "POST", "/delete/albums/"+id, {},
+            function success(response){
+                if(response.data.length == 0){
+                    $rootScope.messages = ["No albums"];
+                }else{
+                    redirectTo("!#menu");
+                }
+            },
+            
+            function error(response){
+                console.log(response);
+            });   
     };
 });
 
@@ -336,6 +351,18 @@ app.controller("albumCtrl", function($scope, $rootScope, $cookies, $http, $route
         if($rootScope.current_song == undefined){
             $rootScope.current_song = data;
         } 
+    };
+    
+    $scope.deleteSong = function(id){
+         request($http, "POST", "/delete/songs/"+id, {},
+            function success(response){
+                 $scope.songs = null;
+                 $scope.getSongs();
+            },
+            
+            function error(response){
+                console.log(response);
+            });   
     };
     
     $scope.getAlbum();

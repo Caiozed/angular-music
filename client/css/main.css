@@ -57,6 +57,9 @@ form h1 {
   top: 30%;
   text-align: center;
 }
+#start-header form, #signup form, #login form {
+  width: 20%;
+}
 
 #menu, #album {
   margin: 0 auto;
@@ -170,6 +173,10 @@ form h1 {
 #albums .album-image .play-album i:hover {
   opacity: 1;
   color: white;
+}
+#albums .album-image .play-album button {
+  position: relative;
+  float: right;
 }
 
 #album-form {

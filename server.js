@@ -119,7 +119,7 @@ app.post("/new/album", uploadImage.single('image'), function(req, res){
 });
 
 app.get("/albums", function(req, res){
-  var query = "SELECT albums.id, username, name, image FROM albums INNER JOIN users ON albums.artist_id = users.id LIMIT 50";
+  var query = "SELECT albums.id, albums.artist_id, username, name, image FROM albums INNER JOIN users ON albums.artist_id = users.id LIMIT 50";
   con.query(query, function(err, result){
     if(err){
       res.send(err);
@@ -133,14 +133,28 @@ app.get("/albums", function(req, res){
 
 app.get("/albums/:id", function(req, res){
   var id = req.params.id;
-  var query = "SELECT albums.id, username, name, image, artist_id FROM albums INNER JOIN users ON users.id = albums.artist_id WHERE albums.id = ?";
-  con.query(query, id, function(err, result){
+  var query = "SELECT albums.id, albums.artist_id, username, name, image FROM albums INNER JOIN users ON albums.artist_id = users.id LIMIT 50";
+  con.query(query, function(err, result){
     if(err){
       res.send(err);
       console.log(err);
     }else{
       res.json(result);
-      console.log("Album sent");
+      console.log("Albums sent");
+    }
+  });
+});
+
+
+app.post("/delete/albums/:id", function(req, res){
+  var id = req.params.id;
+  var query = "DELETE a.*, s.* FROM albums a INNER JOIN songs s ON a.id = s.album_id WHERE a.id = ?";
+  con.query(query, id, function(err, result){
+    if(err){
+      res.send(err);
+      console.log(err);
+    }else{
+      console.log("Album deleted");
     }
   });
 });
@@ -171,6 +185,20 @@ app.get("/albums/:id/songs", function(req, res){
     }else{
       res.json(result);
       console.log("Song sent");
+    }
+  });
+});
+
+app.post("/delete/songs/:id", function(req, res){
+  var id = req.params.id;
+  var query = "DELETE FROM songs WHERE id = ?";
+  con.query(query, id, function(err, result){
+    if(err){
+      res.send(err);
+      console.log(err);
+    }else{
+      res.send("Song deleted");
+      console.log("Song deleted");
     }
   });
 });
