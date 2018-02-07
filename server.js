@@ -159,6 +159,21 @@ app.post("/delete/albums/:id", function(req, res){
   });
 });
 
+app.post("/edit/albums/:id", function(req, res){
+  var id = req.params.id;
+  var name = req.body.name;
+  var query = "UPDATE albums SET name=? WHERE id = ?";
+  con.query(query, [name, id], function(err, result){
+    if(err){
+      res.send(err);
+      console.log(err);
+    }else{
+      res.send("Album updated");
+      console.log("Album updated");
+    }
+  });
+});
+
 app.post("/new/song", uploadAudio.single("song"), function(req, res){
   var album_id = req.body.album_id;
   var name = req.body.name;
@@ -185,6 +200,21 @@ app.get("/albums/:id/songs", function(req, res){
     }else{
       res.json(result);
       console.log("Song sent");
+    }
+  });
+});
+
+app.post("/edit/songs/:id", function(req, res){
+  var id = req.params.id;
+  var name = req.body.name;
+  var query = "UPDATE songs SET name=? WHERE id = ?";
+  con.query(query, [name, id], function(err, result){
+    if(err){
+      res.send(err);
+      console.log(err);
+    }else{
+      res.send("Song updated");
+      console.log("Song updated");
     }
   });
 });

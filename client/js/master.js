@@ -14,6 +14,14 @@ app.config(function($routeProvider){
         templateUrl: "../templates/signup.html"
     })
     
+    .when("/edit/songs/:id", {
+        templateUrl: "../templates/edit-song.html"
+    })
+    
+    .when("/edit/albums/:id", {
+        templateUrl: "../templates/edit-album.html"
+    })
+    
     .when("/login", {
         templateUrl: "../templates/login.html"
     })
@@ -217,7 +225,6 @@ app.controller("signupCtrl", function($scope, $rootScope, $cookies, $http){
     $scope.submitUser = function(username, password, password_confirmation){
         request($http, "POST", "/new/user", {username: username, password: password},
             function success(response){
-                console.log(response);
                 redirectTo("#!login");
             },
             
@@ -367,6 +374,34 @@ app.controller("albumCtrl", function($scope, $rootScope, $cookies, $http, $route
     
     $scope.getAlbum();
     $scope.getSongs();
+});
+
+// Controlle of the edit album view
+app.controller("editAlbumCtrl", function($scope, $routeParams, $http){
+    $scope.updateAlbum = function(name){
+         request($http, "POST", "/edit/albums/"+$routeParams.id, {name: name},
+            function success(response){
+                redirectTo("#!menu");
+            },
+            
+            function error(response){
+                console.log(response);
+            });   
+    }
+});
+
+// Controlle of the edit song view
+app.controller("editSongCtrl", function($scope, $routeParams, $http){
+    $scope.updateSong = function(name){
+         request($http, "POST", "/edit/songs/"+$routeParams.id, {name: name},
+            function success(response){
+                redirectTo("#!menu");
+            },
+            
+            function error(response){
+                console.log(response);
+            });   
+    }
 });
 
 // Global functions

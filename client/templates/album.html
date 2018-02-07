@@ -7,6 +7,7 @@
                     <div ng-show="songs" class="play-album" ng-click="playSong(current_song, album)">
                        <i class="fa fa-play-circle fa-3x play-album"></i> 
                        <button ng-show="album.artist_id == currentUser().id" ng-click="deleteAlbum(album.id)" class="btn btn-danger"><a>Delete</a></button>
+                        <a ng-show="album.artist_id == currentUser().id" class="btn btn-warning" ng-href="#!edit/albums/{{album.id}}" >Edit</a>
                     </div>
                 </a>
             </div>
@@ -19,6 +20,7 @@
                 <li ng-repeat="song in songs">
                     <span class="song-name" ng-click="playSong(song, album)"><i class="fa fa-play play-song"></i> {{song.name}} 
                     <a ng-show="currentUser().id == album.artist_id" class="btn btn-danger text-right"  ng-click="deleteSong(song.id)">Delete</a></span>
+                    <a ng-show="currentUser().id == album.artist_id" class="btn btn-warning text-right"  ng-href="#!edit/songs/{{song.id}}">Edit</a></span>
                 </li>
             </ol>
             

@@ -174,7 +174,7 @@ form h1 {
   opacity: 1;
   color: white;
 }
-#albums .album-image .play-album button {
+#albums .album-image .play-album button, #albums .album-image .play-album a {
   position: relative;
   float: right;
 }

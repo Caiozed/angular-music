@@ -1,0 +1,10 @@
+<div ng-controller="editAlbumCtrl">
+    <form id="album-form">
+        <h1>Update Album</h1>
+        <div class="form-group"> 
+            <label>Album name</label>
+            <input class="form-control" type="text" name="name" ng-model="name" required/>
+        </div>
+        <input class="btn btn-success" type="submit" value="Submit" ng-click="updateAlbum(name)"/>
+    </form>
+</div>

@@ -1,0 +1,10 @@
+<div ng-controller="editSongCtrl">
+    <form id="song-form">
+        <h1>Update Song</h1>
+        <div class="form-group"> 
+            <label>Song name</label>
+            <input class="form-control" type="text" name="name" ng-model="name" required/>
+        </div>
+        <input class="btn btn-success" type="submit" value="Submit" ng-click="updateSong(name)"/>
+    </form>
+</div>
